@@ -885,7 +885,7 @@ public class MultiTouchMapApp extends PApplet
         tuioCursorHandler.addTuioCursor(tuioCursor);          
         
     }
-    
+      
     @Override
     public void updateTuioCursor(TuioCursor tuioCursor)
     {
