@@ -914,6 +914,7 @@ public class MultiTouchMapApp extends PApplet
             System.out.println("TuioCusor Remove :  " + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID());
 
         }
+        cp5.getPointer().set(-1000 , -1000);
         mouseReleased();        
         //cp5.getPointer().released();
         
