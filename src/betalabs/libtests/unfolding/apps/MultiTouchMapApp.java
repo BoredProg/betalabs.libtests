@@ -169,17 +169,32 @@ public class MultiTouchMapApp extends PApplet
      */
     @Override
     public void draw()
-    {        
-        background(70, 71, 74);        
-        
+    {
+        background(70, 71, 74);
+
+        // first draw controlP5
+        cp5.draw();
+
+        // the draw our pointer
+        //cp5.getPointer().set(mouseX,mouseY);
+        //cp5.getPointer().set(width - mouseX, height - mouseY);
+        pushMatrix();
+        translate(cp5.getPointer().getX(), cp5.getPointer().getY());
+        stroke(255);
+        line(-10,0,10,0);
+        line(0,-10,0,10);
+        popMatrix();
+        println(cp5.isMouseOver());
+
+
         map.draw();
-       
+
         drawTuioCursors();
-                
-        drawSnapshots();        
-        
-        updateGui();   
-        
+
+        drawSnapshots();
+
+        updateGui();
+
     }
     
 
@@ -198,6 +213,9 @@ public class MultiTouchMapApp extends PApplet
         }
     }
     
+    /**
+     * mouseClicked
+     */
     public void mouseClicked()
     {
         // Handles clicks on snapshots..
@@ -208,6 +226,24 @@ public class MultiTouchMapApp extends PApplet
                 map.zoomAndPanTo(mapSnapshot.location, mapSnapshot.zoomLevel);
             }
         }
+    }
+    
+    /**
+     * mousePressed
+     */
+    @Override
+    public void mousePressed()
+    {
+        cp5.getPointer().pressed();
+    }
+
+    /**
+     * mouseReleased
+     */
+    @Override
+    public void mouseReleased()
+    {
+        cp5.getPointer().released();
     }
 
 
@@ -229,7 +265,7 @@ public class MultiTouchMapApp extends PApplet
                                MAP_WIDTH,       // width
                                MAP_HEIGHT,     // height
                                _providers.get(0));
-        
+       
         // no good for multitouch.
         map.setTweening(false);
         
@@ -237,9 +273,11 @@ public class MultiTouchMapApp extends PApplet
         // which is created in the "initTuio()" method
         MapUtils.createDefaultEventDispatcher(this, map);
         
+        
         // zoom and pan the current map to first location.
         _currentLocation = _locations.get(0);
         map.zoomAndPanTo(13, _currentLocation);        
+        
     }
     
 
@@ -411,6 +449,22 @@ public class MultiTouchMapApp extends PApplet
         MultiTouchMapApp parent;        
         parent  = this;
         cp5     = new ControlP5(parent);
+        
+        /*
+        * Try to emulate the MousePointer wih the controlP5 Pointer class
+        * following this discussion :
+        *   http://forum.processing.org/two/discussion/9153/controlp5-with-tuio#latest
+        */
+        
+        // disable outodraw because we want to draw our 
+        // custom cursor on to of controlP5
+        cp5.setAutoDraw(false);
+        
+        // enable the pointer (and disable the mouse as input) 
+        cp5.getPointer().enable();
+        cp5.getPointer().set(width / 2, height / 2);
+ 
+
         
         PFont pfont      = createFont(GUI_FONT_BIG_NAME, 
                                       GUI_FONT_BIG_SIZE, 
@@ -747,6 +801,12 @@ public class MultiTouchMapApp extends PApplet
      ***************************************************************************
      */
     
+    /**
+     * toggleTuioEvents 
+     * 
+     * This method is called by reflection by the controlP5 chekcBox with
+     * the same name as this method.
+     */
     public void toggleLogTuioEvents()
     {
         _logTuioEvents = ! _logTuioEvents;
@@ -790,25 +850,13 @@ public class MultiTouchMapApp extends PApplet
         
         eventDispatcher.register(map, "pan");
         eventDispatcher.register(map, "zoom");
-        //eventDispatcher.register(map, "rotate");
+        //eventDispatcher.register(map, "rotate"); already rotating..
 
         tuioClient = tuioCursorHandler.getTuioClient();
         tuioClient.addTuioListener(this);
     }
     
-    public void emulateMouseClick(int x, int y) //throws AWTException
-    {
-        try
-        {
-        Robot bot = new Robot();
-        bot.mouseMove(x, y);    
-        bot.mousePress(InputEvent.BUTTON1_MASK);
-        bot.mouseRelease(InputEvent.BUTTON1_MASK);
-        }
-        catch (AWTException ex) {}
-        
-    }
-     
+      
     
     
     /**
@@ -826,7 +874,12 @@ public class MultiTouchMapApp extends PApplet
         
         if (_logTuioEvents)
         {
-            System.out.println(("TuioCursor Add :   " + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID() + ", X;Y : " + x + ";" + y));            
+            System.out.println(("TuioCursor Add :   " + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID() + ", X;Y : " + x + ";" + y));
+            
+            cp5.getPointer().set(x + 10,y + 10);
+            mousePressed();
+//            cp5.getPointer().pressed();
+//            cp5.getPointer().released();
         }
         
         tuioCursorHandler.addTuioCursor(tuioCursor);          
@@ -845,6 +898,7 @@ public class MultiTouchMapApp extends PApplet
         { 
             System.out.println(("TuioCursor Update :" + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID() +  ", X;Y : " + x + ";" + y));
         }
+        cp5.getPointer().set(x , y);
         
         tuioCursorHandler.updateTuioCursor(tuioCursor);
     }
@@ -860,7 +914,9 @@ public class MultiTouchMapApp extends PApplet
             System.out.println("TuioCusor Remove :  " + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID());
 
         }
-
+        mouseReleased();        
+        //cp5.getPointer().released();
+        
         tuioCursorHandler.removeTuioCursor(tuioCursor);
     }
     
