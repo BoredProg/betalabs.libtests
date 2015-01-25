@@ -174,10 +174,10 @@ public class MultiTouchMapApp extends PApplet
 
         // first draw controlP5
         cp5.draw();
-
+        
+        // HACK : Emulate mouse click
         // the draw our pointer
-        //cp5.getPointer().set(mouseX,mouseY);
-        //cp5.getPointer().set(width - mouseX, height - mouseY);
+        /*
         pushMatrix();
         translate(cp5.getPointer().getX(), cp5.getPointer().getY());
         stroke(255);
@@ -185,6 +185,7 @@ public class MultiTouchMapApp extends PApplet
         line(0,-10,0,10);
         popMatrix();
         println(cp5.isMouseOver());
+        */
 
 
         map.draw();
@@ -228,23 +229,23 @@ public class MultiTouchMapApp extends PApplet
         }
     }
     
-    /**
-     * mousePressed
-     */
-    @Override
-    public void mousePressed()
-    {
-        cp5.getPointer().pressed();
-    }
-
-    /**
-     * mouseReleased
-     */
-    @Override
-    public void mouseReleased()
-    {
-        cp5.getPointer().released();
-    }
+//    /**
+//     * mousePressed
+//     */
+//    @Override
+//    public void mousePressed()
+//    {
+//       // cp5.getPointer().pressed();
+//    }
+//
+//    /**
+//     * mouseReleased
+//     */
+//    @Override
+//    public void mouseReleased()
+//    {
+//        //cp5.getPointer().released();
+//    }
 
 
     /***************************************************************************
@@ -460,9 +461,10 @@ public class MultiTouchMapApp extends PApplet
         // custom cursor on to of controlP5
         cp5.setAutoDraw(false);
         
+        // HACK : Emulate mouse click
         // enable the pointer (and disable the mouse as input) 
-        cp5.getPointer().enable();
-        cp5.getPointer().set(width / 2, height / 2);
+        //cp5.getPointer().enable();
+        //cp5.getPointer().set(width / 2, height / 2);
  
 
         
@@ -876,10 +878,9 @@ public class MultiTouchMapApp extends PApplet
         {
             System.out.println(("TuioCursor Add :   " + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID() + ", X;Y : " + x + ";" + y));
             
-            cp5.getPointer().set(x + 10,y + 10);
-            mousePressed();
-//            cp5.getPointer().pressed();
-//            cp5.getPointer().released();
+            // HACK : Emulate mouse click
+            //cp5.getPointer().set(x,y);
+ 
         }
         
         tuioCursorHandler.addTuioCursor(tuioCursor);          
@@ -898,7 +899,10 @@ public class MultiTouchMapApp extends PApplet
         { 
             System.out.println(("TuioCursor Update :" + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID() +  ", X;Y : " + x + ";" + y));
         }
-        cp5.getPointer().set(x , y);
+        
+        // HACK : Emulate mouse click
+        //cp5.getPointer().set(x , y);
+        //cp5.getPointer().pressed();
         
         tuioCursorHandler.updateTuioCursor(tuioCursor);
     }
@@ -914,9 +918,12 @@ public class MultiTouchMapApp extends PApplet
             System.out.println("TuioCusor Remove :  " + tuioCursor.getCursorID() + ", Session ID : " + tuioCursor.getSessionID());
 
         }
-        cp5.getPointer().set(-1000 , -1000);
-        mouseReleased();        
+        
+
+        // HACK : Emulate mouse click        
+        //cp5.getPointer().set(-1000, -1000);
         //cp5.getPointer().released();
+        
         
         tuioCursorHandler.removeTuioCursor(tuioCursor);
     }
