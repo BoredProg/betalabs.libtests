@@ -444,8 +444,6 @@ public class MultiTouchMapApp extends PApplet
      */
     private void initGUI()
     {
-        
-        
         // initialize ControlP5..
         MultiTouchMapApp parent;        
         parent  = this;
@@ -457,7 +455,7 @@ public class MultiTouchMapApp extends PApplet
         *   http://forum.processing.org/two/discussion/9153/controlp5-with-tuio#latest
         */
         
-        // disable outodraw because we want to draw our 
+        // disable autodraw because we want to draw our 
         // custom cursor on to of controlP5
         cp5.setAutoDraw(false);
         
@@ -987,12 +985,14 @@ public class MultiTouchMapApp extends PApplet
             "--bgcolor=#000000",
             "--hide-stop",
             "--present",
-            "betalabs.libtests.unfolding.apps.MultiTouchMapApp"
+            "betalabs.libtests.unfolding.apps.MultiTouchMapApp",
+            
         };
 
+        
         // Launch..
         PApplet.main(params);
-    }
+    }   
 
 }
 
