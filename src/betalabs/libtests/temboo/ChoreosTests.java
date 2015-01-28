@@ -8,8 +8,12 @@ package betalabs.libtests.temboo;
 import com.temboo.Library.Delicious.GetTags;
 import com.temboo.Library.Delicious.GetTags.GetTagsInputSet;
 import com.temboo.Library.Delicious.GetTags.GetTagsResultSet;
+import com.temboo.Library.Google.Geocoding.GeocodeByAddress;
+import com.temboo.Library.Google.Geocoding.GeocodeByAddress.GeocodeByAddressInputSet;
+import com.temboo.Library.Google.Geocoding.GeocodeByAddress.GeocodeByAddressResultSet;
 import com.temboo.core.TembooException;
 import com.temboo.core.TembooSession;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,11 +23,12 @@ public class ChoreosTests
 {
 
     /**
-     * Does not seem to be working with any Choreo. Message sent to support on 
+     * Does not seem to be working with any Choreo. Message sent to support on
      * 2015/01/27. Getting a "com.temboo.core.TembooHttpException" each time.
-     * @throws TembooException 
+     *
+     * @throws TembooException
      */
-    void testChoreo_Delicious_GetTags() throws TembooException 
+    void testChoreo_Delicious_GetTags() throws TembooException
     {
         // Instantiate TembooSession object..
         TembooSession session = new TembooSession("capturevision", "myFirstApp", "bc155faadd9d41f6b7572d257a38e774");
@@ -35,14 +40,33 @@ public class ChoreosTests
         GetTagsInputSet getTagsInputs = getTagsChoreo.newInputSet();
 
         // Set inputs userName and password
-        getTagsInputs.set_Password("xxx");
-        getTagsInputs.set_Username("xxx");
+        getTagsInputs.set_Password("boston25");
+        getTagsInputs.set_Username("SProd55");
 
         // Execute Choreo
         GetTagsResultSet getTagsResults = getTagsChoreo.execute(getTagsInputs);
-        
+
         // print response..
         System.out.println(getTagsResults.get_Response());
+    }
+
+    public void testChoreo_Google_GeoCoding() throws TembooException
+    {
+        // Instantiate the Choreo, using a previously instantiated TembooSession object, eg:
+        TembooSession session = new TembooSession("capturevision", "myFirstApp", "bc155faadd9d41f6b7572d257a38e774");
+
+        GeocodeByAddress geocodeByAddressChoreo = new GeocodeByAddress(session);
+
+        // Get an InputSet object for the choreo
+        GeocodeByAddressInputSet geocodeByAddressInputs = geocodeByAddressChoreo.newInputSet();
+
+        // Set inputs
+        geocodeByAddressInputs.set_Address("Central Park, New York");
+
+        // Execute Choreo
+        GeocodeByAddressResultSet geocodeByAddressResults = geocodeByAddressChoreo.execute(geocodeByAddressInputs);
+        
+        System.out.println(geocodeByAddressResults.get_Latitude() + ";" + geocodeByAddressResults.get_Longitude());
     }
 
     /**
