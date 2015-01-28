@@ -292,7 +292,7 @@ public class MultiTouchMapApp extends PApplet
     {
         
         // creates the list..
-        _mapSnapshots = new ArrayList<MapSnapshot>();
+        _mapSnapshots = new ArrayList<>();
         
         // and sets the max number of snapshots the user can take.
         _maxNumberOfSnapshots = 10;
@@ -352,7 +352,7 @@ public class MultiTouchMapApp extends PApplet
     private void initProviders()
     {
         // Creates the HashMap.
-        _providers = new HashMap<>();
+        _providers = new HashMap<Integer, AbstractMapProvider>();
         
         _providers.put(1, new Microsoft.HybridProvider());
         _providers.put(0, new Google.GoogleMapProvider());        
