@@ -292,7 +292,7 @@ public class MultiTouchMapApp extends PApplet
     {
         
         // creates the list..
-        _mapSnapshots = new ArrayList<>();
+        _mapSnapshots = new ArrayList<MapSnapshot>();
         
         // and sets the max number of snapshots the user can take.
         _maxNumberOfSnapshots = 10;
