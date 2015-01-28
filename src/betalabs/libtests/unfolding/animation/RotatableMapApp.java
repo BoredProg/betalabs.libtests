@@ -43,7 +43,8 @@ import de.fhpotsdam.unfolding.utils.ScreenPosition;
  * Use r and l to inner rotate clock-wise (right), and counter-clock-wise (left), and respectively R and L to outer
  * rotate. Note, in this example the map rotates around the current mouse pointer.
  */
-public class RotatableMapApp extends PApplet {
+public class RotatableMapApp extends PApplet 
+{
 
 	UnfoldingMap map;
 
@@ -52,10 +53,14 @@ public class RotatableMapApp extends PApplet {
 
 	boolean fullRotatable = true;
 
-	public void setup() {
-		if (fullRotatable) {
+	public void setup() 
+        {
+		if (fullRotatable) 
+                {
 			size(800, 600, OPENGL);
-		} else {
+		} 
+                else 
+                {
 			size(800, 600);
 		}
 
@@ -65,7 +70,8 @@ public class RotatableMapApp extends PApplet {
 		MapUtils.createDefaultEventDispatcher(this, map);
 	}
 
-	public void draw() {
+	public void draw() 
+        {
 		background(0);
 
 		map.draw();
@@ -76,23 +82,30 @@ public class RotatableMapApp extends PApplet {
 		ellipse(pos.x, pos.y, 10, 10);
 	}
 
-	public void keyPressed() {
+	public void keyPressed() 
+        {
 		rotateCenter = new PVector(mouseX, mouseY);
 
 		// Inner rotate (i.e. map) works with both, P2D and GLGraphics
 		map.mapDisplay.setInnerTransformationCenter(rotateCenter);
 		if (key == 'r') {
 			map.rotate(-PI / 8);
-		} else if (key == 'l') {
+		} 
+                else if (key == 'l') 
+                {
 			map.rotate(PI / 8);
 		}
 
 		// Outer rotate (i.e. map container) only works with GLGraphics offscreen buffer
 		map.mapDisplay.setTransformationCenter(rotateCenter);
-		if (key == 'R') {
-			map.outerRotate(-PI / 8);
-		} else if (key == 'L') {
+		if (key == 'R') 
+                {
+			map.outerRotate(-PI / 8f);
+		} 
+                else if (key == 'L') 
+                {
 			map.outerRotate(PI / 8);
+                        
 		}
 	}
 
